@@ -30,9 +30,9 @@ t_raycast	*init_raycast(void)
 	t_raycast *raycast;
 
 	raycast = malloc(sizeof(t_raycast));
-	raycast->pos_x = 9;
-	raycast->pos_y = 5;
-	raycast->dir_x = -1;
+	raycast->pos_x = 3;
+	raycast->pos_y = 3;
+	raycast->dir_x = 1;
 	raycast->dir_y = 0;
 	raycast->plane_x = 0;
 	raycast->plane_y = 0.66;
@@ -57,6 +57,18 @@ t_raycast	*init_raycast(void)
 	return (raycast);
 }
 
+t_move		*init_movement(void)
+{
+	t_move *move;
+
+	move = malloc(sizeof(t_move));
+	move->up = 0;
+	move->down = 0;
+	move->right = 0;
+	move->left = 0;
+	return (move);
+}
+
 t_wolf		*init_wolf(void)
 {
 	t_wolf *wolf;
@@ -65,5 +77,6 @@ t_wolf		*init_wolf(void)
 	wolf->draw = init_draw();
 	wolf->valid = init_validation();
 	wolf->raycast = init_raycast();
+	wolf->move = init_movement();
 	return (wolf);
 }

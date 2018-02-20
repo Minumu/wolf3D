@@ -59,11 +59,20 @@ typedef struct	s_raycast
 	double		rot_speed;
 }				t_raycast;
 
+typedef struct	s_move
+{
+	int			up;
+	int 		down;
+	int 		right;
+	int 		left;
+}				t_move;
+
 typedef struct	s_wolf
 {
 	t_draw		*draw;
 	t_valid		*valid;
 	t_raycast	*raycast;
+	t_move		*move;
 }				t_wolf;
 
 t_wolf		*init_wolf(void);
@@ -72,6 +81,7 @@ void	move_up(t_wolf *wolf);
 void	move_down(t_wolf *wolf);
 void	move_right(t_wolf *wolf);
 void	move_left(t_wolf *wolf);
+int 	image(t_wolf *wolf);
 
 char	**ft_strdup_double_arr(char **src);
 char	**ft_strjoin_double_arr(char **s1, char **s2);
