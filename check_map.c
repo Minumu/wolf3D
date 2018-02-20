@@ -1,10 +1,34 @@
 #include "wolf.h"
 
+void	map_to_int(t_valid *valid)
+{
+	int i;
+	int j;
+	int k;
+
+	i = 0;
+	k = 0;
+	valid->wolf_map = (int**)malloc(sizeof(int*) * valid->map_len_y);
+	while (i < valid->map_len_y)
+	{
+		j = 0;
+		valid->wolf_map[i] = (int*)malloc(sizeof(int) * valid->len);
+		while (j < valid->len)
+		{
+			valid->wolf_map[i][j] = ft_atoi(valid->map[k]);
+			j++;
+			k++;
+		}
+		i++;
+	}
+}
+
 int		count_line_length(char *line, t_valid *valid)
 {
 	char	**split;
 	char	**temp;
 	int		len;
+	int i= 0;
 
 	split = ft_strsplit(line, ' ');
 	len = 0;
@@ -19,7 +43,7 @@ int		count_line_length(char *line, t_valid *valid)
 		valid->map = ft_strjoin_double_arr(temp, split);
 		free_double_arr(temp);
 	}
-//	map->map_y++;
+	valid->map_len_y++;
 	free_double_arr(split);
 	return (len);
 }
@@ -81,11 +105,13 @@ int		check_map(int fd, t_wolf *wolf)
 		if (!is_error(line, wolf))
 			return (0);
 	}
+
 	if (wolf->valid->len == 0)
 	{
 		ft_printf("Sorry, but this map is empty\n");
 		return (0);
 	}
 	ft_strdel(&line);
+	map_to_int(wolf->valid);
 	return (1);
 }

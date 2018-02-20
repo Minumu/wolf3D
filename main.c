@@ -22,11 +22,19 @@ void	putpixel_black_case2(t_draw *draw, int i, int j)
 			(draw->bpp / 8)) + 2) = (char)(255);
 }
 
-int		key_processing(int keycode, t_draw *draw)
+int		key_processing(int keycode, t_wolf *wolf)
 {
-	if (keycode == 53)
+	if (keycode == 126)
+		move_up(wolf);
+	else if (keycode == 125)
+		move_down(wolf);
+	else if (keycode == 124)
+		move_right(wolf);
+	else if (keycode == 123)
+		move_left(wolf);
+	else if (keycode == 53)
 	{
-		mlx_destroy_window(draw->mlx, draw->win);
+		mlx_destroy_window(wolf->draw->mlx, wolf->draw->win);
 //		clean_all(all);
 		exit(0);
 	}
@@ -74,7 +82,7 @@ void	find_wall(t_wolf *wolf)
 			wolf->raycast->map_y += wolf->raycast->step_y;
 			wolf->raycast->wall_side = 1;
 		}
-		if (wolf->valid->map[wolf->raycast->map_x][wolf->raycast->map_y] != '0')
+		if (wolf->valid->wolf_map[wolf->raycast->map_x][wolf->raycast->map_y] > 0)
 			wall = 1;
 	}
 	if (wolf->raycast->wall_side == 0)
@@ -135,13 +143,20 @@ void 	image(t_wolf *wolf)
 		dda_line(wolf, x);
 		x++;
 	}
+	wolf->raycast->prev_frame = wolf->raycast->curr_frame;
+	wolf->raycast->curr_frame = clock();
+	printf("%lf\n", wolf->raycast->curr_frame);
+	wolf->raycast->frame_time = (wolf->raycast->curr_frame - wolf->raycast->prev_frame) / 1000;
+	printf("%lf\n", 1 / wolf->raycast->frame_time);
+	wolf->raycast->move_speed = wolf->raycast->frame_time * 5;
+	wolf->raycast->rot_speed = wolf->raycast->frame_time * 3;
+
 }
 
 int 	main(int ac, char **av)
 {
 	t_wolf	*wolf;
 	int		fd;
-	int i =0;
 
 	fd = open (av[1], O_RDONLY);
 	wolf = init_wolf();
@@ -150,7 +165,7 @@ int 	main(int ac, char **av)
 		// !!! clean !!!
 		return (0);
 	}
-	if (wolf->valid->map[(int)wolf->raycast->pos_x][(int)wolf->raycast->pos_y] != 0)
+	if (wolf->valid->wolf_map[(int)wolf->raycast->pos_x][(int)wolf->raycast->pos_y] != 0)
 		return (0);
 	wolf->draw->mlx = mlx_init();
 	wolf->draw->win = mlx_new_window(wolf->draw->mlx,
@@ -159,16 +174,11 @@ int 	main(int ac, char **av)
 									 HEIGHT);
 	wolf->draw->img = mlx_get_data_addr(wolf->draw->img_w, &wolf->draw->bpp,
 									   &wolf->draw->size_l, &wolf->draw->en);
-	while (wolf->valid->map[i])
-	{
-		ft_printf("%s", wolf->valid->map[i]);
-		i++;
-	}
 	image(wolf);
 	mlx_put_image_to_window(wolf->draw->mlx, wolf->draw->win,
 							wolf->draw->img_w, 0, 0);
 //	mlx_mouse_hook(draw->win, mouse_processing, all);
-	mlx_hook(wolf->draw->win, 2, 5, key_processing, wolf->draw);
+	mlx_hook(wolf->draw->win, 2, 5, key_processing, wolf);
 	mlx_loop(wolf->draw->mlx);
 	return (0);
 }

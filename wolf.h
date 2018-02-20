@@ -2,16 +2,22 @@
 # define WOLF_H
 
 # include <math.h>
+# include <time.h>
+
+# include <stdio.h> // DELETE
+
 # include "libft/include/libft.h"
 # include "minilibx_macos/mlx.h"
-# define HEIGHT 500
-# define WIDTH 500
+# define HEIGHT 1000
+# define WIDTH 1000
 
 typedef struct	s_valid
 {
 	int 		len;
 	int 		line;
 	char		**map;
+	int 		**wolf_map;
+	int			map_len_y;
 }				t_valid;
 
 typedef struct	s_draw
@@ -35,6 +41,7 @@ typedef struct	s_raycast
 	double		plane_y;
 	double		curr_frame;
 	double		prev_frame;
+	double		frame_time;
 	double		camera_x;
 	double		ray_x;
 	double		ray_y;
@@ -48,6 +55,8 @@ typedef struct	s_raycast
 	int 		step_x;
 	int 		step_y;
 	int 		wall_side;
+	double		move_speed;
+	double		rot_speed;
 }				t_raycast;
 
 typedef struct	s_wolf
@@ -59,6 +68,10 @@ typedef struct	s_wolf
 
 t_wolf		*init_wolf(void);
 int		check_map(int fd, t_wolf *wolf);
+void	move_up(t_wolf *wolf);
+void	move_down(t_wolf *wolf);
+void	move_right(t_wolf *wolf);
+void	move_left(t_wolf *wolf);
 
 char	**ft_strdup_double_arr(char **src);
 char	**ft_strjoin_double_arr(char **s1, char **s2);
