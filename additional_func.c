@@ -58,21 +58,3 @@ char	**ft_strjoin_double_arr(char **s1, char **s2)
 	new[ft_strlen_double_arr(s1) + ft_strlen_double_arr(s2)] = NULL;
 	return (new);
 }
-
-void	free_double_arr(char **arr)
-{
-	int i;
-
-	i = 0;
-	if (arr == NULL)
-		return ;
-	else
-	{
-		while (arr[i])
-		{
-			ft_strdel(&arr[i]);
-			i++;
-		}
-		free(arr);
-	}
-}

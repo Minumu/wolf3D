@@ -22,6 +22,7 @@ t_valid		*init_validation(void)
 	valid->map = NULL;
 	valid->wolf_map = 0;
 	valid->map_len_y = 0;
+	valid->above_line = 0;
 	return (valid);
 }
 

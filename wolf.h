@@ -18,6 +18,7 @@ typedef struct	s_valid
 	char		**map;
 	int 		**wolf_map;
 	int			map_len_y;
+	int 		above_line;
 }				t_valid;
 
 typedef struct	s_draw
@@ -86,6 +87,6 @@ int 	image(t_wolf *wolf);
 char	**ft_strdup_double_arr(char **src);
 char	**ft_strjoin_double_arr(char **s1, char **s2);
 void	free_double_arr(char **arr);
-
+void	clean_all(t_wolf *wolf);
 
 #endif

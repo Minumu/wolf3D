@@ -26,7 +26,7 @@ void	move_down(t_wolf *wolf)
 		wolf->raycast->pos_y -= wolf->raycast->dir_y * wolf->raycast->move_speed;
 }
 
-void	move_right(t_wolf *wolf)
+void	move_left(t_wolf *wolf)
 {
 	double old_dir_x;
 	double old_plane_x;
@@ -43,7 +43,7 @@ void	move_right(t_wolf *wolf)
 							 wolf->raycast->plane_y * cos(-wolf->raycast->rot_speed);
 }
 
-void	move_left(t_wolf *wolf)
+void	move_right(t_wolf *wolf)
 {
 	double old_dir_x;
 	double old_plane_x;

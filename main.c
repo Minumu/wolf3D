@@ -66,7 +66,7 @@ int		key_processing_release(int keycode, t_wolf *wolf)
 	if (keycode == 53)
 	{
 		mlx_destroy_window(wolf->draw->mlx, wolf->draw->win);
-//		clean_all(all);
+		clean_all(wolf);
 		exit(0);
 	}
 	return (0);
@@ -86,7 +86,7 @@ int		key_processing(int keycode, t_wolf *wolf)
 	 if (keycode == 53)
 	{
 		mlx_destroy_window(wolf->draw->mlx, wolf->draw->win);
-//		clean_all(all);
+		clean_all(wolf);
 		exit(0);
 	}
 	return (0);
@@ -216,35 +216,48 @@ int 	image(t_wolf *wolf)
 		dda_line(wolf, x);
 		x++;
 	}
-//	wolf->raycast->curr_frame = wolf->raycast->prev_frame + (CLOCKS_PER_SEC / 100);
+	wolf->raycast->curr_frame = wolf->raycast->prev_frame + (CLOCKS_PER_SEC / 100);
 	wolf->raycast->curr_frame = clock();
 //	printf("%lf\n", wolf->raycast->curr_frame);
 	wolf->raycast->frame_time = (wolf->raycast->curr_frame - wolf->raycast->prev_frame) / CLOCKS_PER_SEC;
 //	printf("%lf\n", wolf->raycast->frame_time);
 	wolf->raycast->move_speed = wolf->raycast->frame_time * 2;
 	wolf->raycast->rot_speed = wolf->raycast->frame_time * 2;
-	printf("%lf\n", wolf->raycast->pos_x);
-	printf("%lf\n", wolf->raycast->pos_y);
+	printf("%lf\n", wolf->raycast->move_speed);
+//	printf("%lf\n", wolf->raycast->pos_x);
+//	printf("%lf\n", wolf->raycast->pos_y);
 	mlx_put_image_to_window(wolf->draw->mlx, wolf->draw->win,
 							wolf->draw->img_w, 0, 0);
 	return (1);
 }
+
+
 
 int 	main(int ac, char **av)
 {
 	t_wolf	*wolf;
 	int		fd;
 
-	fd = open (av[1], O_RDONLY);
+	if (ac != 2)
+	{
+		ft_printf("Please, choose one map :)\n");
+		return (0);
+	}
+	if ((fd = open(av[1], O_RDONLY)) < 0)
+	{
+		ft_printf("Oh man, this map isn't exist :(\n");
+		return (0);
+	}
 	wolf = init_wolf();
 	if (check_map(fd, wolf) == 0)
 	{
-		// !!! clean !!!
+		clean_all(wolf);
 		return (0);
 	}
 	if (wolf->valid->wolf_map[(int)wolf->raycast->pos_x][(int)wolf->raycast->pos_y] != 0)
 	{
-		printf("Here\n");
+		ft_printf("Oh man, change your start position, please\n");
+		clean_all(wolf);
 		return (0);
 	}
 	wolf->draw->mlx = mlx_init();
